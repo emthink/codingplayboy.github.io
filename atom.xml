@@ -4,7 +4,7 @@
   
   <link href="/atom.xml" rel="self"/>
   <link href="http://blog.codingplayboy.com/"/>
-  <updated>2016-01-05T16:21:06.000Z</updated>
+  <updated>2016-01-05T16:35:08.000Z</updated>
   <id>http://blog.codingplayboy.com/</id>
   
   <author>
@@ -19,16 +19,15 @@
     <link href="http://blog.codingplayboy.com/2016/01/06/js-object/"/>
     <id>http://blog.codingplayboy.com/2016/01/06/js-object/</id>
     <published>2016-01-05T16:16:11.000Z</published>
-    <updated>2016-01-05T16:21:06.000Z</updated>
-    <content type="html"><![CDATA[<p>#JavaScript之面向对象<br>传统面向对象语言有一个通用标志，即类的概念，通过类可以创建任意多个具有相同属性和方法的对象。而JavaScript中没有类的概念，它的对象与传统面向对象语言有所不同。</p>
-<p>##动态类型与静态类型<br>何谓动态，何谓静态？编程语言按数据类型大体分为两类：动态类型语言，静态类型语言。</p>
+    <updated>2016-01-05T16:35:08.000Z</updated>
+    <content type="html"><![CDATA[<h1 id="JavaScript_u4E4B_u9762_u5411_u5BF9_u8C61"><a href="#JavaScript_u4E4B_u9762_u5411_u5BF9_u8C61" class="headerlink" title="JavaScript之面向对象"></a>JavaScript之面向对象</h1><p>传统面向对象语言有一个通用标志，即类的概念，通过类可以创建任意多个具有相同属性和方法的对象。而JavaScript中没有类的概念，它的对象与传统面向对象语言有所不同。</p>
+<h2 id="u52A8_u6001_u7C7B_u578B_u4E0E_u9759_u6001_u7C7B_u578B"><a href="#u52A8_u6001_u7C7B_u578B_u4E0E_u9759_u6001_u7C7B_u578B" class="headerlink" title="动态类型与静态类型"></a>动态类型与静态类型</h2><p>何谓动态，何谓静态？编程语言按数据类型大体分为两类：动态类型语言，静态类型语言。</p>
 <blockquote>
 <p>静态类型语言在编译时便已确定变量的类型，而动态类型语言的变量类型要到程序运行时，待变量被赋值后，才会具有某种类型。</p>
 </blockquote>
 <p>典型的静态类型语言有Java, C#等，而在JavaScript中，当我们为某变量赋值时，并不需要判断其类型，其显然是一门典型的动态类型语言。</p>
-<p>##JavaScript对象和原型链</p>
-<p>###对象<br>与对象最紧密相关当然是变量了<br>JavaScript的中有五种简单数据类型（也称基本数据类型）以及一种复杂数据类型。<br>简单数据类型包括数字, 字符串, 布尔值（true和false）, null, undefined值。<br>复杂数据类型即Object。<strong>JavaScript中除了简单数据类型值，其他所有值均为对象。</strong></p>
-<p>####JavaScript变量之基本类型值与引用类型值<br>JavaScript变量可能包含两种不同数据类型的值：基本数据类型值和引用类型值。将一个值赋给变量时，解析器会判断这个值的类型。</p>
+<h2 id="JavaScript_u5BF9_u8C61_u548C_u539F_u578B_u94FE"><a href="#JavaScript_u5BF9_u8C61_u548C_u539F_u578B_u94FE" class="headerlink" title="JavaScript对象和原型链"></a>JavaScript对象和原型链</h2><h3 id="u5BF9_u8C61"><a href="#u5BF9_u8C61" class="headerlink" title="对象"></a>对象</h3><p>与对象最紧密相关当然是变量了<br>JavaScript的中有五种简单数据类型（也称基本数据类型）以及一种复杂数据类型。<br>简单数据类型包括数字, 字符串, 布尔值（true和false）, null, undefined值。<br>复杂数据类型即Object。<strong>JavaScript中除了简单数据类型值，其他所有值均为对象。</strong></p>
+<h4 id="JavaScript_u53D8_u91CF_u4E4B_u57FA_u672C_u7C7B_u578B_u503C_u4E0E_u5F15_u7528_u7C7B_u578B_u503C"><a href="#JavaScript_u53D8_u91CF_u4E4B_u57FA_u672C_u7C7B_u578B_u503C_u4E0E_u5F15_u7528_u7C7B_u578B_u503C" class="headerlink" title="JavaScript变量之基本类型值与引用类型值"></a>JavaScript变量之基本类型值与引用类型值</h4><p>JavaScript变量可能包含两种不同数据类型的值：基本数据类型值和引用类型值。将一个值赋给变量时，解析器会判断这个值的类型。</p>
 <blockquote>
 <p>基本类型值指的是简单的数据段，是按值访问的，可以操作保存在变量中的实际值；而引用类型值指那些可能由多个值构成的对象，是引用类型的一个实例，是按引用访问的。</p>
 </blockquote>
@@ -38,26 +37,24 @@
 </ul>
 <p><em>注：引用类型值和引用类型不同。</em></p>
 <p>JavaScript引用类型主要包括Object，Array，Date，RegExp，Function以及为了操作基本类型值提供的三个特殊引用类型：Boolean，Number和String。<strong>可以说，JavaScript中对象即是某种引用类型的实例，我们使用的大多数引用类型值又都是Object类型的实例。</strong></p>
-<p>###JavaScript创建对象<br>不同于许多传统面向对象语言使用基于类的对象，JavaScript使用基于原型的对象。</p>
+<h3 id="JavaScript_u521B_u5EFA_u5BF9_u8C61"><a href="#JavaScript_u521B_u5EFA_u5BF9_u8C61" class="headerlink" title="JavaScript创建对象"></a>JavaScript创建对象</h3><p>不同于许多传统面向对象语言使用基于类的对象，JavaScript使用基于原型的对象。</p>
 <ul>
 <li><strong>对象字面量</strong> 一个对象字面量就是在一对花括号中的零或多个名值对。</li>
 <li><strong>Object构造函数</strong> 调用Object构造函数，可使用new Object()形式创建对象。<em>Object.create()方式创建对象亦很常见。</em></li>
 </ul>
-<p>###JavaScript继承</p>
-<p>继承（Object Orient）向来是面向对象语言最突出特征之一，如Java等传统OO语言都支持基于类的继承，而JavaScript中是没有类的概念，其主要依靠原型链实现继承。</p>
+<h3 id="JavaScript_u7EE7_u627F"><a href="#JavaScript_u7EE7_u627F" class="headerlink" title="JavaScript继承"></a>JavaScript继承</h3><p>继承（Object Orient）向来是面向对象语言最突出特征之一，如Java等传统OO语言都支持基于类的继承，而JavaScript中是没有类的概念，其主要依靠原型链实现继承。</p>
 <blockquote>
 <p>基于原型链的委托机制就是原型继承的本质，基本思想是利用原型让一个引用类型继承另一个引用类型的属性和方法。</p>
 </blockquote>
-<p>####原型<br>对象的原型，就JavaScript真正实现而言，其实对象并无原型，而是对象的构造器（构造函数）与原型。所谓‘对象把请求委托给自己的原型’即是把请求委托给其构造器原型。JavaScript对象的__proto__属性默认即指向其构造器原型对象。</p>
+<h4 id="u539F_u578B"><a href="#u539F_u578B" class="headerlink" title="原型"></a>原型</h4><p>对象的原型，就JavaScript真正实现而言，其实对象并无原型，而是对象的构造器（构造函数）与原型。所谓‘对象把请求委托给自己的原型’即是把请求委托给其构造器原型。JavaScript对象的__proto__属性默认即指向其构造器原型对象。</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="keyword">new</span> <span class="built_in">Object</span>();</span><br><span class="line"><span class="built_in">console</span>.log(a.__proto__ === <span class="built_in">Object</span>.prototype);  <span class="comment">//true</span></span><br></pre></td></tr></table></figure>
-<p>####构造函数，原型与实例<br><strong>每一个构造函数都有一个原型对象，原型对象都包含一个指向构造函数的指针，而构造函数的实例都包含一个指向原型对象的内部指针。JavaScript中所有对象都默认继承自根对象Object。</strong></p>
+<h4 id="u6784_u9020_u51FD_u6570_uFF0C_u539F_u578B_u4E0E_u5B9E_u4F8B"><a href="#u6784_u9020_u51FD_u6570_uFF0C_u539F_u578B_u4E0E_u5B9E_u4F8B" class="headerlink" title="构造函数，原型与实例"></a>构造函数，原型与实例</h4><p><strong>每一个构造函数都有一个原型对象，原型对象都包含一个指向构造函数的指针，而构造函数的实例都包含一个指向原型对象的内部指针。JavaScript中所有对象都默认继承自根对象Object。</strong></p>
 <p>给一个构造函数的原型对象赋值为另一个类型的实例，此时原型对象即包含指向另一原型对象的指针，而另一个原型对象中也包含指向其相应构造函数的指针，如此便构成了原型与实例的关系链，也即原型链。依此可实现不同对象间的属性和方法的继承。</p>
 <ul>
 <li><strong>默认原型</strong> 所有引用类型默认都继承了Object，所有函数的默认原型都是Object实例，而如前所述：构造函数的实例都包含一个指向原型对象的内部指针，因此默认原型都包含一个指向Object.prototype（即Object原型）的内部指针。</li>
 </ul>
 <figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Animal</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="keyword">this</span>.property = <span class="string">'Animal'</span>;</span><br><span class="line">&#125;</span><br><span class="line">Animal.prototype.getAnimalProperty = <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">this</span>.property;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Dog</span><span class="params">()</span> </span>&#123;  </span><br><span class="line">	<span class="keyword">this</span>.dogproperty = <span class="string">'Dog'</span>;</span><br><span class="line">&#125;</span><br><span class="line">Dog.prototype = <span class="keyword">new</span> Animal();<span class="comment">//继承自Animal</span></span><br><span class="line">Dog.prottotype.getDogProperty = <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">this</span>. dogproperty; </span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> dog = <span class="keyword">new</span> Dog();</span><br><span class="line">alert(dog.getDogProperty);</span><br><span class="line">alert(dog.getAnimalProperty);</span><br></pre></td></tr></table></figure>
-<p>##总结</p>
-<ul>
+<h2 id="u603B_u7ED3"><a href="#u603B_u7ED3" class="headerlink" title="总结"></a>总结</h2><ul>
 <li><strong>对象的根对象</strong> JavaScript对象都源于（继承自）根对象Object。</li>
 <li><strong>对象源自克隆</strong> 定义对象，不是通过实例化类，而是把另一对象作为原型并克隆之。</li>
 <li><strong>对象记忆性</strong> 请求可以在原型链中依此向后传递，每个对象都会记住自己的原型，详细请回顾上文关于对象原型之说的__proto__属性。</li>
@@ -65,33 +62,22 @@
 </ul>
 ]]></content>
     <summary type="html">
-    <![CDATA[JavaScript笔记分享]]>
+    <![CDATA[传统面向对象语言有一个通用标志，即类的概念，通过类可以创建任意多个具有相同属性和方法的对象。而JavaScript中没有类的概念，它的对象与传统面向对象语言有所不同。]]>
     
     </summary>
     
       <category term="JavaScript, Object Oriented" scheme="http://blog.codingplayboy.com/tags/JavaScript-Object-Oriented/"/>
     
-  </entry>
-  
-  <entry>
-    <title><![CDATA[about]]></title>
-    <link href="http://blog.codingplayboy.com/2016/01/05/about/"/>
-    <id>http://blog.codingplayboy.com/2016/01/05/about/</id>
-    <published>2016-01-05T14:42:52.000Z</published>
-    <updated>2016-01-05T14:42:52.000Z</updated>
-    <content type="html"></content>
-    <summary type="html">
-    
-    </summary>
+      <category term="JavaScript" scheme="http://blog.codingplayboy.com/categories/JavaScript/"/>
     
   </entry>
   
   <entry>
-    <title><![CDATA[Hello World]]></title>
+    <title><![CDATA[Hello Hexo]]></title>
     <link href="http://blog.codingplayboy.com/2016/01/04/hello-world/"/>
     <id>http://blog.codingplayboy.com/2016/01/04/hello-world/</id>
-    <published>2016-01-04T14:53:40.000Z</published>
-    <updated>2016-01-04T14:53:40.000Z</updated>
+    <published>2016-01-03T16:16:11.000Z</published>
+    <updated>2016-01-05T16:37:59.000Z</updated>
     <content type="html"><![CDATA[<p>Welcome to <a href="http://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="http://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="http://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
 <h2 id="Quick_Start"><a href="#Quick_Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create_a_new_post"><a href="#Create_a_new_post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
 <p>More info: <a href="http://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
@@ -105,6 +91,10 @@
     <summary type="html">
     <![CDATA[<p>Welcome to <a href="http://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="http://hexo.io]]>
     </summary>
+    
+      <category term="Hexo" scheme="http://blog.codingplayboy.com/tags/Hexo/"/>
+    
+      <category term="Hexo" scheme="http://blog.codingplayboy.com/categories/Hexo/"/>
     
   </entry>
   
