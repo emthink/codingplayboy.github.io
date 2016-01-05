@@ -53,16 +53,16 @@
 
 
 
-<meta name="description" content="JavaScript笔记分享">
+<meta name="description" content="传统面向对象语言有一个通用标志，即类的概念，通过类可以创建任意多个具有相同属性和方法的对象。而JavaScript中没有类的概念，它的对象与传统面向对象语言有所不同。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="JavaScript之面向对象">
 <meta property="og:url" content="http://blog.codingplayboy.com/2016/01/06/js-object/index.html">
 <meta property="og:site_name" content="惊鸿三世的博客">
-<meta property="og:description" content="JavaScript笔记分享">
-<meta property="og:updated_time" content="2016-01-05T16:29:05.000Z">
+<meta property="og:description" content="传统面向对象语言有一个通用标志，即类的概念，通过类可以创建任意多个具有相同属性和方法的对象。而JavaScript中没有类的概念，它的对象与传统面向对象语言有所不同。">
+<meta property="og:updated_time" content="2016-01-05T16:35:08.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JavaScript之面向对象">
-<meta name="twitter:description" content="JavaScript笔记分享">
+<meta name="twitter:description" content="传统面向对象语言有一个通用标志，即类的概念，通过类可以创建任意多个具有相同属性和方法的对象。而JavaScript中没有类的概念，它的对象与传统面向对象语言有所不同。">
 
 
 
@@ -240,6 +240,21 @@
           </span>
 
           
+            <span class="post-category" >
+              &nbsp; | &nbsp; 分类于
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/JavaScript/" itemprop="url" rel="index">
+                    <span itemprop="name">JavaScript</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
 
           
             
@@ -266,13 +281,12 @@
 
       
         <span itemprop="articleBody"><h1 id="JavaScript_u4E4B_u9762_u5411_u5BF9_u8C61"><a href="#JavaScript_u4E4B_u9762_u5411_u5BF9_u8C61" class="headerlink" title="JavaScript之面向对象"></a>JavaScript之面向对象</h1><p>传统面向对象语言有一个通用标志，即类的概念，通过类可以创建任意多个具有相同属性和方法的对象。而JavaScript中没有类的概念，它的对象与传统面向对象语言有所不同。</p>
-<p>##动态类型与静态类型<br>何谓动态，何谓静态？编程语言按数据类型大体分为两类：动态类型语言，静态类型语言。</p>
+<h2 id="u52A8_u6001_u7C7B_u578B_u4E0E_u9759_u6001_u7C7B_u578B"><a href="#u52A8_u6001_u7C7B_u578B_u4E0E_u9759_u6001_u7C7B_u578B" class="headerlink" title="动态类型与静态类型"></a>动态类型与静态类型</h2><p>何谓动态，何谓静态？编程语言按数据类型大体分为两类：动态类型语言，静态类型语言。</p>
 <blockquote>
 <p>静态类型语言在编译时便已确定变量的类型，而动态类型语言的变量类型要到程序运行时，待变量被赋值后，才会具有某种类型。</p>
 </blockquote>
 <p>典型的静态类型语言有Java, C#等，而在JavaScript中，当我们为某变量赋值时，并不需要判断其类型，其显然是一门典型的动态类型语言。</p>
-<p>##JavaScript对象和原型链</p>
-<h3 id="u5BF9_u8C61"><a href="#u5BF9_u8C61" class="headerlink" title="对象"></a>对象</h3><p>与对象最紧密相关当然是变量了<br>JavaScript的中有五种简单数据类型（也称基本数据类型）以及一种复杂数据类型。<br>简单数据类型包括数字, 字符串, 布尔值（true和false）, null, undefined值。<br>复杂数据类型即Object。<strong>JavaScript中除了简单数据类型值，其他所有值均为对象。</strong></p>
+<h2 id="JavaScript_u5BF9_u8C61_u548C_u539F_u578B_u94FE"><a href="#JavaScript_u5BF9_u8C61_u548C_u539F_u578B_u94FE" class="headerlink" title="JavaScript对象和原型链"></a>JavaScript对象和原型链</h2><h3 id="u5BF9_u8C61"><a href="#u5BF9_u8C61" class="headerlink" title="对象"></a>对象</h3><p>与对象最紧密相关当然是变量了<br>JavaScript的中有五种简单数据类型（也称基本数据类型）以及一种复杂数据类型。<br>简单数据类型包括数字, 字符串, 布尔值（true和false）, null, undefined值。<br>复杂数据类型即Object。<strong>JavaScript中除了简单数据类型值，其他所有值均为对象。</strong></p>
 <h4 id="JavaScript_u53D8_u91CF_u4E4B_u57FA_u672C_u7C7B_u578B_u503C_u4E0E_u5F15_u7528_u7C7B_u578B_u503C"><a href="#JavaScript_u53D8_u91CF_u4E4B_u57FA_u672C_u7C7B_u578B_u503C_u4E0E_u5F15_u7528_u7C7B_u578B_u503C" class="headerlink" title="JavaScript变量之基本类型值与引用类型值"></a>JavaScript变量之基本类型值与引用类型值</h4><p>JavaScript变量可能包含两种不同数据类型的值：基本数据类型值和引用类型值。将一个值赋给变量时，解析器会判断这个值的类型。</p>
 <blockquote>
 <p>基本类型值指的是简单的数据段，是按值访问的，可以操作保存在变量中的实际值；而引用类型值指那些可能由多个值构成的对象，是引用类型的一个实例，是按引用访问的。</p>
@@ -283,7 +297,7 @@
 </ul>
 <p><em>注：引用类型值和引用类型不同。</em></p>
 <p>JavaScript引用类型主要包括Object，Array，Date，RegExp，Function以及为了操作基本类型值提供的三个特殊引用类型：Boolean，Number和String。<strong>可以说，JavaScript中对象即是某种引用类型的实例，我们使用的大多数引用类型值又都是Object类型的实例。</strong></p>
-<p>###JavaScript创建对象<br>不同于许多传统面向对象语言使用基于类的对象，JavaScript使用基于原型的对象。</p>
+<h3 id="JavaScript_u521B_u5EFA_u5BF9_u8C61"><a href="#JavaScript_u521B_u5EFA_u5BF9_u8C61" class="headerlink" title="JavaScript创建对象"></a>JavaScript创建对象</h3><p>不同于许多传统面向对象语言使用基于类的对象，JavaScript使用基于原型的对象。</p>
 <ul>
 <li><strong>对象字面量</strong> 一个对象字面量就是在一对花括号中的零或多个名值对。</li>
 <li><strong>Object构造函数</strong> 调用Object构造函数，可使用new Object()形式创建对象。<em>Object.create()方式创建对象亦很常见。</em></li>
@@ -323,8 +337,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/01/05/about/" rel="next" title="about">
-                <i class="fa fa-chevron-left"></i> about
+              <a href="/2016/01/04/hello-world/" rel="next" title="Hello Hexo">
+                <i class="fa fa-chevron-left"></i> Hello Hexo
               </a>
             
           </div>
@@ -401,21 +415,21 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">3</span>
+              <span class="site-state-item-count">2</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
 
           <div class="site-state-item site-state-categories">
             <a href="/categories">
-              <span class="site-state-item-count">0</span>
+              <span class="site-state-item-count">2</span>
               <span class="site-state-item-name">分类</span>
               </a>
           </div>
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">1</span>
+              <span class="site-state-item-count">4</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>
@@ -487,7 +501,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#JavaScript_u4E4B_u9762_u5411_u5BF9_u8C61"><span class="nav-number">1.</span> <span class="nav-text">JavaScript之面向对象</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#u5BF9_u8C61"><span class="nav-number">1.0.1.</span> <span class="nav-text">对象</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#JavaScript_u53D8_u91CF_u4E4B_u57FA_u672C_u7C7B_u578B_u503C_u4E0E_u5F15_u7528_u7C7B_u578B_u503C"><span class="nav-number">1.0.1.1.</span> <span class="nav-text">JavaScript变量之基本类型值与引用类型值</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JavaScript_u7EE7_u627F"><span class="nav-number">1.0.2.</span> <span class="nav-text">JavaScript继承</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#u539F_u578B"><span class="nav-number">1.0.2.1.</span> <span class="nav-text">原型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#u6784_u9020_u51FD_u6570_uFF0C_u539F_u578B_u4E0E_u5B9E_u4F8B"><span class="nav-number">1.0.2.2.</span> <span class="nav-text">构造函数，原型与实例</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#u603B_u7ED3"><span class="nav-number">1.1.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#JavaScript_u4E4B_u9762_u5411_u5BF9_u8C61"><span class="nav-number">1.</span> <span class="nav-text">JavaScript之面向对象</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#u52A8_u6001_u7C7B_u578B_u4E0E_u9759_u6001_u7C7B_u578B"><span class="nav-number">1.1.</span> <span class="nav-text">动态类型与静态类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JavaScript_u5BF9_u8C61_u548C_u539F_u578B_u94FE"><span class="nav-number">1.2.</span> <span class="nav-text">JavaScript对象和原型链</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#u5BF9_u8C61"><span class="nav-number">1.2.1.</span> <span class="nav-text">对象</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#JavaScript_u53D8_u91CF_u4E4B_u57FA_u672C_u7C7B_u578B_u503C_u4E0E_u5F15_u7528_u7C7B_u578B_u503C"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">JavaScript变量之基本类型值与引用类型值</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JavaScript_u521B_u5EFA_u5BF9_u8C61"><span class="nav-number">1.2.2.</span> <span class="nav-text">JavaScript创建对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JavaScript_u7EE7_u627F"><span class="nav-number">1.2.3.</span> <span class="nav-text">JavaScript继承</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#u539F_u578B"><span class="nav-number">1.2.3.1.</span> <span class="nav-text">原型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#u6784_u9020_u51FD_u6570_uFF0C_u539F_u578B_u4E0E_u5B9E_u4F8B"><span class="nav-number">1.2.3.2.</span> <span class="nav-text">构造函数，原型与实例</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#u603B_u7ED3"><span class="nav-number">1.3.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">
