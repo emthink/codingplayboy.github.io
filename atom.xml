@@ -4,7 +4,7 @@
   
   <link href="/atom.xml" rel="self"/>
   <link href="http://blog.codingplayboy.com/"/>
-  <updated>2016-01-05T16:35:08.000Z</updated>
+  <updated>2016-01-05T16:45:44.000Z</updated>
   <id>http://blog.codingplayboy.com/</id>
   
   <author>
@@ -19,7 +19,7 @@
     <link href="http://blog.codingplayboy.com/2016/01/06/js-object/"/>
     <id>http://blog.codingplayboy.com/2016/01/06/js-object/</id>
     <published>2016-01-05T16:16:11.000Z</published>
-    <updated>2016-01-05T16:35:08.000Z</updated>
+    <updated>2016-01-05T16:45:44.000Z</updated>
     <content type="html"><![CDATA[<h1 id="JavaScript_u4E4B_u9762_u5411_u5BF9_u8C61"><a href="#JavaScript_u4E4B_u9762_u5411_u5BF9_u8C61" class="headerlink" title="JavaScript之面向对象"></a>JavaScript之面向对象</h1><p>传统面向对象语言有一个通用标志，即类的概念，通过类可以创建任意多个具有相同属性和方法的对象。而JavaScript中没有类的概念，它的对象与传统面向对象语言有所不同。</p>
 <h2 id="u52A8_u6001_u7C7B_u578B_u4E0E_u9759_u6001_u7C7B_u578B"><a href="#u52A8_u6001_u7C7B_u578B_u4E0E_u9759_u6001_u7C7B_u578B" class="headerlink" title="动态类型与静态类型"></a>动态类型与静态类型</h2><p>何谓动态，何谓静态？编程语言按数据类型大体分为两类：动态类型语言，静态类型语言。</p>
 <blockquote>
@@ -66,7 +66,9 @@
     
     </summary>
     
-      <category term="JavaScript, Object Oriented" scheme="http://blog.codingplayboy.com/tags/JavaScript-Object-Oriented/"/>
+      <category term="JavaScript" scheme="http://blog.codingplayboy.com/tags/JavaScript/"/>
+    
+      <category term="Object Oriented" scheme="http://blog.codingplayboy.com/tags/Object-Oriented/"/>
     
       <category term="JavaScript" scheme="http://blog.codingplayboy.com/categories/JavaScript/"/>
     
@@ -77,7 +79,7 @@
     <link href="http://blog.codingplayboy.com/2016/01/04/hello-world/"/>
     <id>http://blog.codingplayboy.com/2016/01/04/hello-world/</id>
     <published>2016-01-03T16:16:11.000Z</published>
-    <updated>2016-01-05T16:37:59.000Z</updated>
+    <updated>2016-01-05T16:38:45.000Z</updated>
     <content type="html"><![CDATA[<p>Welcome to <a href="http://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="http://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="http://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
 <h2 id="Quick_Start"><a href="#Quick_Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create_a_new_post"><a href="#Create_a_new_post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
 <p>More info: <a href="http://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
