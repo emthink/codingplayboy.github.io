@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-  <title><![CDATA[Hexo]]></title>
+  <title><![CDATA[惊鸿三世的博客]]></title>
   
   <link href="/atom.xml" rel="self"/>
   <link href="http://yoursite.com/"/>
-  <updated>2016-01-04T14:56:33.000Z</updated>
+  <updated>2016-01-04T14:53:40.000Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -13,19 +13,6 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
-  
-  <entry>
-    <title><![CDATA[My Blog]]></title>
-    <link href="http://yoursite.com/2016/01/04/My-Blog/"/>
-    <id>http://yoursite.com/2016/01/04/My-Blog/</id>
-    <published>2016-01-04T14:56:33.000Z</published>
-    <updated>2016-01-04T14:56:33.000Z</updated>
-    <content type="html"></content>
-    <summary type="html">
-    
-    </summary>
-    
-  </entry>
   
   <entry>
     <title><![CDATA[Hello World]]></title>
