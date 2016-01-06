@@ -1,0 +1,792 @@
+<!doctype html>
+<html class="theme-next   use-motion ">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.4.5.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="JavaScript,this," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="惊鸿三世的博客" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.2" />
+
+
+
+
+
+
+<meta name="description" content="在JavaScript学习中，this的重要性不明而寓，有必要对其深入学习，而与this息息相关的有两个特别需要注意的就是call，apply，本篇就着手从this开始阐述，而后介绍call、apply之用法。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JavaScript之this、call与apply">
+<meta property="og:url" content="http://blog.codingplayboy.com/2016/01/07/js-executionContext/index.html">
+<meta property="og:site_name" content="惊鸿三世的博客">
+<meta property="og:description" content="在JavaScript学习中，this的重要性不明而寓，有必要对其深入学习，而与this息息相关的有两个特别需要注意的就是call，apply，本篇就着手从this开始阐述，而后介绍call、apply之用法。">
+<meta property="og:updated_time" content="2016-01-06T16:42:16.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="JavaScript之this、call与apply">
+<meta name="twitter:description" content="在JavaScript学习中，this的重要性不明而寓，有必要对其深入学习，而与this息息相关的有两个特别需要注意的就是call，apply，本篇就着手从this开始阐述，而后介绍call、apply之用法。">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: 'post',
+    motion: true
+  };
+</script>
+
+
+  <title> JavaScript之this、call与apply | 惊鸿三世的博客 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?4e08da21ca39dc73b7dca5e1353d54e3";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">惊鸿三世的博客</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content">
+          
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                JavaScript之this、call与apply
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            发表于
+            <time itemprop="dateCreated" datetime="2016-01-07T00:26:50+08:00" content="2016-01-07">
+              2016-01-07
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp; 分类于
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/JavaScript/" itemprop="url" rel="index">
+                    <span itemprop="name">JavaScript</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/01/07/js-executionContext/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/01/07/js-executionContext/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><h1 id="JavaScript_u4E4Bthis_u3001call_u4E0Eapply"><a href="#JavaScript_u4E4Bthis_u3001call_u4E0Eapply" class="headerlink" title="JavaScript之this、call与apply"></a>JavaScript之this、call与apply</h1><p>在JavaScript学习中，this的重要性不明而寓，有必要对其深入学习，而与this息息相关的有两个特别需要注意的就是call，apply，本篇就着手从this开始阐述，而后介绍call、apply之用法。</p>
+<blockquote>
+<p>调用一个函数时代码执行控制权就转移到此函数，同时将参数传入此函数，除了声明函数时定义的形式参数，每个函数都会接受两个附加参数：this和arguments。</p>
+</blockquote>
+<h2 id="this"><a href="#this" class="headerlink" title="this"></a>this</h2><p><strong>JavaScript中this总是指向一个对象，这个对象基于函数运行时的执行环境动态绑定，而非函数声明时所处环境。</strong></p>
+<p><em><a href="http://blog.codingplayboy.com/2016/01/07/js-scope/">关于执行环境可查看本系列篇JavaScript之作用域与作用域链</a></em></p>
+<h3 id="this_u6307_u5411"><a href="#this_u6307_u5411" class="headerlink" title="this指向"></a>this指向</h3><p>关于this指向问题，与函数调用息息相关，其可大致分为四类情况：</p>
+<ul>
+<li>(1). 方法调用； 即作为某对象的方法调用。</li>
+<li>(2). 函数调用；即作为普通函数调用。</li>
+<li>(3). 构造器函数调用；即以new方式调用。</li>
+<li>(4). call与apply调用；即以Function.prototype.call或Function.prototype.apply调用。</li>
+</ul>
+<h4 id="u65B9_u6CD5_u8C03_u7528"><a href="#u65B9_u6CD5_u8C03_u7528" class="headerlink" title="方法调用"></a>方法调用</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">	name: <span class="string">'Job'</span>,</span><br><span class="line">	getName: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">		<span class="built_in">console</span>.log(<span class="keyword">this</span> === obj); <span class="comment">//输出true</span></span><br><span class="line">		<span class="built_in">console</span>.log(<span class="keyword">this</span>.name);  <span class="comment">//输出Job</span></span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">this</span>.name;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br><span class="line">obj.getName();</span><br></pre></td></tr></table></figure>
+<p><strong>当函数作为对象的方法被调用时，this总是指向该对象。</strong></p>
+<h4 id="u51FD_u6570_u8C03_u7528"><a href="#u51FD_u6570_u8C03_u7528" class="headerlink" title="函数调用"></a>函数调用</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">var</span> name = <span class="string">'Job'</span>;</span><br><span class="line"><span class="keyword">var</span> getName = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">	<span class="built_in">console</span>.log(<span class="keyword">this</span> === <span class="built_in">window</span>);  <span class="comment">//输出true</span></span><br><span class="line">	<span class="built_in">console</span>.log(<span class="keyword">this</span>.name);  <span class="comment">//输出Job</span></span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">this</span>.name;</span><br><span class="line">&#125;;</span><br><span class="line">getName(); <span class="comment">//普通函数调用</span></span><br></pre></td></tr></table></figure>
+<p><strong>非严格模式下，当函数作为普通函数方式调用时，不论该函数调用时所处执行环境为何，this总是指向全局对象，JavaScript中即是window对象。</strong></p>
+<p>再看如下实例，加深理解：<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="title">script</span>&gt;</span><span class="javascript"></span><br><span class="line">	<span class="keyword">var</span> id = <span class="string">'windowId'</span>;</span><br><span class="line">	<span class="built_in">document</span>.getElementById(<span class="string">'myDiv'</span>).onclick = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">		<span class="built_in">console</span>.log(<span class="keyword">this</span>.id); <span class="comment">//输出myDiv</span></span><br><span class="line">		<span class="keyword">var</span> fn = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">			<span class="built_in">console</span>.log(<span class="keyword">this</span>.id); <span class="comment">//输出windowId</span></span><br><span class="line">		&#125;;</span><br><span class="line">		fn(); <span class="comment">//普通函数调用</span></span><br><span class="line">	&#125;;</span><br><span class="line"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<h4 id="u6784_u9020_u5668_u51FD_u6570_u8C03_u7528"><a href="#u6784_u9020_u5668_u51FD_u6570_u8C03_u7528" class="headerlink" title="构造器函数调用"></a>构造器函数调用</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">var</span> Animal = <span class="function"><span class="keyword">function</span>(<span class="params">name</span>) </span>&#123;</span><br><span class="line">	<span class="keyword">this</span>.name = name;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">var</span> animal = <span class="keyword">new</span> Animal(<span class="string">'Dog'</span>);</span><br><span class="line"><span class="built_in">console</span>.log(animal.name); <span class="comment">//输出Dog</span></span><br></pre></td></tr></table></figure>
+<p><strong>当用new调用构造器函数时，总会返回一个对象，该对象可以看成是构造器函数一个实例，一般，此时构造器里的this就指向返回的这个对象。</strong><br>但还需要注意的是当构造器显式地返回一个对象时：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">var</span> Animal = <span class="function"><span class="keyword">function</span>(<span class="params">name</span>) </span>&#123;</span><br><span class="line">	<span class="keyword">this</span>.name = name;</span><br><span class="line">	<span class="keyword">return</span> &#123;</span><br><span class="line">		name: <span class="string">'Job'</span></span><br><span class="line">	&#125;;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">var</span> animal = <span class="keyword">new</span> Animal(<span class="string">'Dog'</span>);</span><br><span class="line"><span class="built_in">console</span>.log(animal.name); <span class="comment">//输出Job</span></span><br></pre></td></tr></table></figure></p>
+<p>此时，this指向的是构造器显式返回的对象。</p>
+<h4 id="call_u4E0Eapply_u8C03_u7528"><a href="#call_u4E0Eapply_u8C03_u7528" class="headerlink" title="call与apply调用"></a>call与apply调用</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">	name: <span class="string">'Job'</span>,</span><br><span class="line">	getName: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">		<span class="built_in">console</span>.log(<span class="keyword">this</span> === obj); </span><br><span class="line">		<span class="built_in">console</span>.log(<span class="keyword">this</span>.name);  </span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">this</span>.name;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">var</span> obj2 = &#123;</span><br><span class="line">	name: <span class="string">'Web'</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="built_in">console</span>.log(obj.getName());  <span class="comment">//输出Job</span></span><br><span class="line"><span class="built_in">console</span>.log(obj.getName.call(obj2)); <span class="comment">//输出Web</span></span><br><span class="line"><span class="built_in">console</span>.log(obj.getName.apply(obj2)); <span class="comment">//输出Web</span></span><br></pre></td></tr></table></figure>
+<p>当以Function.prototype.call或Function.prototype.apply方式调用函数时，动态传入参数改变执行环境，此时this指向传入的对象。</p>
+<h2 id="call_u4E0Eapply"><a href="#call_u4E0Eapply" class="headerlink" title="call与apply"></a>call与apply</h2><p>call与apply是Function原型上定义的两个方法，其应用广泛。</p>
+<h3 id="call_u4E0Eapply_u7684_u533A_u522B"><a href="#call_u4E0Eapply_u7684_u533A_u522B" class="headerlink" title="call与apply的区别"></a>call与apply的区别</h3><p>两者作用完全一样，不同之处在于传入参数的形式。</p>
+<blockquote>
+<p>call传入参数数量不固定，第一个参数代表所调用函数体内this的指向，而后依次为所调用函数所需参数。</p>
+<p>apply接受最多两个参数，第一个参数指定被调用函数内this的指向，第二个参数为一个带下标的集合，可以是数组或者类数组，作为参数传给被调用函数。</p>
+</blockquote>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">var fn = function(a, b, b) &#123;</span><br><span class="line">	console.<span class="built_in">log</span>([a, b, c]);</span><br><span class="line">&#125;;</span><br><span class="line">fn.call(null, <span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>);</span><br><span class="line">fn.apply(null, [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]);</span><br></pre></td></tr></table></figure>
+<p><strong>需要注意的是，非严格模式下，使用call或apply时，第一个参数是必须的，当第一个参数传入null时，函数体内this就会指向被调用函数的宿主对象(其包含对象)；而严格模式下，this指向则为null</strong></p>
+<h3 id="call_u4E0Eapply_u7684_u5E94_u7528"><a href="#call_u4E0Eapply_u7684_u5E94_u7528" class="headerlink" title="call与apply的应用"></a>call与apply的应用</h3><h4 id="u6539_u53D8this_u6307_u5411"><a href="#u6539_u53D8this_u6307_u5411" class="headerlink" title="改变this指向"></a>改变this指向</h4><p>使用call或apply调用函数可改变函数体内this的指向。实例如前文中this指向相关实例。</p>
+<h4 id="Function-prototype-bind"><a href="#Function-prototype-bind" class="headerlink" title="Function.prototype.bind"></a>Function.prototype.bind</h4><p>Function.prototype.bind可以用来绑定函数体内this指向，其参数为this的指向对象。IE8及以下不支持，这里我们可以自己实现一个。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="built_in">Function</span>.prototype.bind = <span class="function"><span class="keyword">function</span>(<span class="params">context</span>) </span>&#123;</span><br><span class="line">	<span class="keyword">var</span> self = <span class="keyword">this</span>;  <span class="comment">//保存原函数的引用</span></span><br><span class="line">	<span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123; <span class="comment">//返回一个新函数</span></span><br><span class="line">		<span class="keyword">return</span> self.apply(context, <span class="built_in">arguments</span>); <span class="comment">//将传入的参数指定为新函数体内this的指向对象</span></span><br><span class="line">	&#125;;</span><br><span class="line">&#125;;	</span><br><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">	name: <span class="string">'Job'</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">var</span> fn = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">	<span class="built_in">console</span>.log(<span class="keyword">this</span>.name);</span><br><span class="line">&#125;;</span><br><span class="line">fn.bind(obj)();</span><br></pre></td></tr></table></figure></p>
+<h4 id="u501F_u7528_u5176_u4ED6_u5BF9_u8C61_u7684_u65B9_u6CD5"><a href="#u501F_u7528_u5176_u4ED6_u5BF9_u8C61_u7684_u65B9_u6CD5" class="headerlink" title="借用其他对象的方法"></a>借用其他对象的方法</h4><p>最熟悉的就是借用构造函数实现类似继承的效果：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">var</span> Animal = <span class="function"><span class="keyword">function</span>(<span class="params">name</span>) </span>&#123;</span><br><span class="line">	<span class="keyword">this</span>.name = name;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">var</span> Dog = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">	Animal.apply(<span class="keyword">this</span>, <span class="built_in">arguments</span>);</span><br><span class="line">&#125;;</span><br><span class="line">Dog.prototype.getName = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">this</span>.name;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> dog = <span class="keyword">new</span> Dog(<span class="string">'Dog'</span>);</span><br><span class="line"><span class="built_in">console</span>.log(dog.getName());  <span class="comment">//输出Dog</span></span><br></pre></td></tr></table></figure></p>
+<p>另一很常见的情况就是借用Array.prototype对象上的方法处理函数参数类数组arguments:<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">	<span class="built_in">Array</span>.prototype.shift.call(<span class="built_in">arguments</span>); <span class="comment">//arguments为类数组[1,2,3]</span></span><br><span class="line">	<span class="keyword">var</span> args = <span class="built_in">Array</span>.prototype.slice.apply(<span class="built_in">arguments</span>); <span class="comment">//将arguments类数组剩余参数转换为数组赋给args变量</span></span><br><span class="line">	<span class="built_in">console</span>.log(<span class="built_in">arguments</span>); <span class="comment">//输出[2, 3]</span></span><br><span class="line">	<span class="built_in">console</span>.log(args); <span class="comment">//输出[2, 3]</span></span><br><span class="line">&#125;)(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>);</span><br></pre></td></tr></table></figure></p>
+<p>上面借用Array.prototype上的shift方法移除参数列表的首位，当然也可以借用其他方法达到其他目的，如push, slice等。</p>
+<p>JavaScript中，call与apply的应用是非常广泛的，在各类Js框架库中，都不难发现其身影。</p>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/JavaScript/" rel="tag">#JavaScript</a>
+          
+            <a href="/tags/this/" rel="tag">#this</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/01/07/js-scope/" rel="next" title="JavaScript之作用域与作用域链">
+                <i class="fa fa-chevron-left"></i> JavaScript之作用域与作用域链
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+        </div>
+
+        
+
+
+        
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/01/07/js-executionContext/"
+           data-title="JavaScript之this、call与apply" data-url="http://blog.codingplayboy.com/2016/01/07/js-executionContext/">
+      </div>
+    
+  </div>
+
+
+      </div>
+
+      
+        
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/uploads/avatar.jpg" alt="惊鸿三世" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">惊鸿三世</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">路漫漫其修远兮，吾将上下而求索。</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">6</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            <a href="/categories">
+              <span class="site-state-item-count">2</span>
+              <span class="site-state-item-name">分类</span>
+              </a>
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/tags">
+              <span class="site-state-item-count">7</span>
+              <span class="site-state-item-name">标签</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/codingplayboy" target="_blank">
+                  
+                    <i class="fa fa-globe"></i> github
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/3943991354" target="_blank">
+                  
+                    <i class="fa fa-globe"></i> weibo
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.zhihu.com/people/codingplayboy" target="_blank">
+                  
+                    <i class="fa fa-globe"></i> zhihu
+                  
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+            <p class="site-author-name">Links</p>
+            
+              <span class="links-of-author-item">
+                <a href="http://macshuo.com/" target="_blank">MacTalk</a>
+              </span>
+            
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#JavaScript_u4E4Bthis_u3001call_u4E0Eapply"><span class="nav-number">1.</span> <span class="nav-text">JavaScript之this、call与apply</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#this"><span class="nav-number">1.1.</span> <span class="nav-text">this</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#this_u6307_u5411"><span class="nav-number">1.1.1.</span> <span class="nav-text">this指向</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#u65B9_u6CD5_u8C03_u7528"><span class="nav-number">1.1.1.1.</span> <span class="nav-text">方法调用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#u51FD_u6570_u8C03_u7528"><span class="nav-number">1.1.1.2.</span> <span class="nav-text">函数调用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#u6784_u9020_u5668_u51FD_u6570_u8C03_u7528"><span class="nav-number">1.1.1.3.</span> <span class="nav-text">构造器函数调用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#call_u4E0Eapply_u8C03_u7528"><span class="nav-number">1.1.1.4.</span> <span class="nav-text">call与apply调用</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#call_u4E0Eapply"><span class="nav-number">1.2.</span> <span class="nav-text">call与apply</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#call_u4E0Eapply_u7684_u533A_u522B"><span class="nav-number">1.2.1.</span> <span class="nav-text">call与apply的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#call_u4E0Eapply_u7684_u5E94_u7528"><span class="nav-number">1.2.2.</span> <span class="nav-text">call与apply的应用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#u6539_u53D8this_u6307_u5411"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">改变this指向</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Function-prototype-bind"><span class="nav-number">1.2.2.2.</span> <span class="nav-text">Function.prototype.bind</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#u501F_u7528_u5176_u4ED6_u5BF9_u8C61_u7684_u65B9_u6CD5"><span class="nav-number">1.2.2.3.</span> <span class="nav-text">借用其他对象的方法</span></a></li></ol></li></ol></li></ol></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+      
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="icon-next-heart fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">惊鸿三世</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+
+  
+    
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"codingplayboy"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+    
+     
+
+
+    
+  
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.2"></script>
+
+
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.2"></script>
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+<script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+<script type="text/javascript" src="/js/motion.js?v=0.4.5.2" id="motion.global"></script>
+
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.2" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    motionMiddleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+      if (CONFIG.sidebar === 'post') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  <script type="text/javascript" src="/js/bootstrap.js"></script>
+
+  
+  
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+  </script>
+
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  </script>
+
+  
+    <script type="text/javascript" src="http://cdn.staticfile.org/mathjax/2.4.0/MathJax.js"></script>
+    <script type="text/javascript" src="http://cdn.staticfile.org/mathjax/2.4.0/config/TeX-AMS-MML_HTMLorMML.js"></script>
+  
+
+
+  
+  
+
+</body>
+</html>

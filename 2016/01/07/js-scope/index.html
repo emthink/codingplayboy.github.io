@@ -35,7 +35,7 @@
 <link href="/css/main.css?v=0.4.5.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Compile,JavaScript," />
+  <meta name="keywords" content="JavaScript,Scope," />
 
 
 
@@ -53,16 +53,16 @@
 
 
 
-<meta name="description" content="不同于其他的编译性语言如Java、C等，运行前需要将其编译为机器语言的文件，JavaScript在运行程序的时候才翻译，即JavaScript是一门解释性脚本语言。">
+<meta name="description" content="在JavaScript的进阶学习过程中，深入理解其作用域与作用域链必不可少，本篇主要阐述JavaScript执行环境与执行环境对象，变量对象，作用域与作用域链及其关系。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="JavaScript之解释与执行机制">
-<meta property="og:url" content="http://blog.codingplayboy.com/2016/01/06/js-compileRun/index.html">
+<meta property="og:title" content="JavaScript之作用域与作用域链">
+<meta property="og:url" content="http://blog.codingplayboy.com/2016/01/07/js-scope/index.html">
 <meta property="og:site_name" content="惊鸿三世的博客">
-<meta property="og:description" content="不同于其他的编译性语言如Java、C等，运行前需要将其编译为机器语言的文件，JavaScript在运行程序的时候才翻译，即JavaScript是一门解释性脚本语言。">
-<meta property="og:updated_time" content="2016-01-06T13:19:22.000Z">
+<meta property="og:description" content="在JavaScript的进阶学习过程中，深入理解其作用域与作用域链必不可少，本篇主要阐述JavaScript执行环境与执行环境对象，变量对象，作用域与作用域链及其关系。">
+<meta property="og:updated_time" content="2016-01-06T16:23:44.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="JavaScript之解释与执行机制">
-<meta name="twitter:description" content="不同于其他的编译性语言如Java、C等，运行前需要将其编译为机器语言的文件，JavaScript在运行程序的时候才翻译，即JavaScript是一门解释性脚本语言。">
+<meta name="twitter:title" content="JavaScript之作用域与作用域链">
+<meta name="twitter:description" content="在JavaScript的进阶学习过程中，深入理解其作用域与作用域链必不可少，本篇主要阐述JavaScript执行环境与执行环境对象，变量对象，作用域与作用域链及其关系。">
 
 
 
@@ -75,7 +75,7 @@
 </script>
 
 
-  <title> JavaScript之解释与执行机制 | 惊鸿三世的博客 </title>
+  <title> JavaScript之作用域与作用域链 | 惊鸿三世的博客 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -225,7 +225,7 @@
             
             
               
-                JavaScript之解释与执行机制
+                JavaScript之作用域与作用域链
               
             
           </h1>
@@ -234,8 +234,8 @@
         <div class="post-meta">
           <span class="post-time">
             发表于
-            <time itemprop="dateCreated" datetime="2016-01-06T21:09:50+08:00" content="2016-01-06">
-              2016-01-06
+            <time itemprop="dateCreated" datetime="2016-01-07T00:11:48+08:00" content="2016-01-07">
+              2016-01-07
             </time>
           </span>
 
@@ -260,8 +260,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/01/06/js-compileRun/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/01/06/js-compileRun/" itemprop="commentsCount"></span>
+                <a href="/2016/01/07/js-scope/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/01/07/js-scope/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -280,40 +280,63 @@
       
 
       
-        <span itemprop="articleBody"><h1 id="JavaScript_u4E4B_u89E3_u91CA_u4E0E_u6267_u884C_u673A_u5236"><a href="#JavaScript_u4E4B_u89E3_u91CA_u4E0E_u6267_u884C_u673A_u5236" class="headerlink" title="JavaScript之解释与执行机制"></a>JavaScript之解释与执行机制</h1><p>不同于其他的编译性语言如Java、C等，运行前需要将其编译为机器语言的文件，JavaScript在运行程序的时候才翻译，即JavaScript是一门解释性脚本语言。</p>
+        <span itemprop="articleBody"><h1 id="JavaScript_u4E4B_u4F5C_u7528_u57DF_u4E0E_u4F5C_u7528_u57DF_u94FE"><a href="#JavaScript_u4E4B_u4F5C_u7528_u57DF_u4E0E_u4F5C_u7528_u57DF_u94FE" class="headerlink" title="JavaScript之作用域与作用域链"></a>JavaScript之作用域与作用域链</h1><p>此篇阐述JavaScript中很重要的几个概念：作用域与作用域链及相关知识点，首先从变量与作用域的行为关系开始讨论。</p>
+<h2 id="u53D8_u91CF_u4F5C_u7528_u57DF"><a href="#u53D8_u91CF_u4F5C_u7528_u57DF" class="headerlink" title="变量作用域"></a>变量作用域</h2><p>JavaScript中，变量有全局变量及局部变量之分，而能定义变量作用域的语块只有函数。与局部变量有关的一种有趣特性，在此处不得不谈–变量提升。</p>
+<h3 id="u53D8_u91CF_u63D0_u5347"><a href="#u53D8_u91CF_u63D0_u5347" class="headerlink" title="变量提升"></a>变量提升</h3><p>变量提升为何物？</p>
 <blockquote>
-<p>解释型语言：程序不需要编译，程序在运行时才<strong>翻译</strong>成机器语言，每执行一次都要翻译一次。</p>
-<p>编译型语言：程序在执行之前需要一个专门的<strong>编译</strong>过程，把程序编译成 为机器语言的文件，运行时不需要重新翻译，直接使用编译的结果。</p>
+<p>JavaScript的变量声明会被提升到它们所在函数的顶部，而初始化仍旧在原来的地方。JavaScript引擎并没有重写代码：每次调用函数时，声明都会重新提升。</p>
 </blockquote>
-<p><em>JavaScript翻译过程又做解释过程。</em></p>
-<h2 id="JavaScript_u89E3_u91CA_u4E0E_u6267_u884C"><a href="#JavaScript_u89E3_u91CA_u4E0E_u6267_u884C" class="headerlink" title="JavaScript解释与执行"></a>JavaScript解释与执行</h2><p>JavaScript按照代码块来进行解释和执行，代码块间相互独立，但变量和方法共享。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">var</span> name = <span class="string">'Jog'</span>; <span class="comment">//全局变量</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">prison</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">	<span class="built_in">console</span>.log(a); <span class="comment">//输出undefined</span></span><br><span class="line">	<span class="keyword">var</span> a = <span class="number">1</span>；<span class="comment">//局部变量</span></span><br><span class="line">	<span class="built_in">console</span>.log(a); <span class="comment">//输出1</span></span><br><span class="line">	<span class="built_in">console</span>.log(name); <span class="comment">//输出Jog</span></span><br><span class="line">&#125;</span><br><span class="line">prison();</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">var</span> name = <span class="string">'Jog'</span>;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">prison</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">	<span class="built_in">console</span>.log(name); <span class="comment">//输出undefined</span></span><br><span class="line">	<span class="keyword">var</span> name = <span class="string">'Hans'</span>;</span><br><span class="line">&#125;</span><br><span class="line">prison();</span><br></pre></td></tr></table></figure>
+<p><strong>此处name的声明被提升到函数的顶部，变量查找时先从局部作用域开始，未找到则由内而外最后到全局作用域。</strong></p>
+<p>接下来我们详细分析一下JavaScript的提升方式。</p>
+<h3 id="u53D8_u91CF_u63D0_u5347_u4E0E_u6267_u884C_u73AF_u5883_u5BF9_u8C61"><a href="#u53D8_u91CF_u63D0_u5347_u4E0E_u6267_u884C_u73AF_u5883_u5BF9_u8C61" class="headerlink" title="变量提升与执行环境对象"></a>变量提升与执行环境对象</h3><p>学习任何一门语言，都像学习魔术一样，初时引人迷惑，惊叹；然而当秘密被揭开时几乎令人失望，JavaScript不外如是。</p>
+<h4 id="u63D0_u5347"><a href="#u63D0_u5347" class="headerlink" title="提升"></a>提升</h4><p>执行某代码块时，JavaScript引擎先解释，再运行。解释过程主要几个过程：</p>
+<pre><code>- (1) 声明该作用域内var变量
+- (2) 声明并初始化函数参数
+- (3) 声明并初始化声明式函数
+</code></pre><p><em><a href="https://github.com/codingplayboy/javascript_notes/blob/master/js_compileRun.md" target="_blank" rel="external">详细可查看本系列笔记JavaScript之解释与执行机制</a></em></p>
+<h4 id="u6267_u884C_u73AF_u5883_u4E0E_u6267_u884C_u73AF_u5883_u5BF9_u8C61"><a href="#u6267_u884C_u73AF_u5883_u4E0E_u6267_u884C_u73AF_u5883_u5BF9_u8C61" class="headerlink" title="执行环境与执行环境对象"></a>执行环境与执行环境对象</h4><p><strong>执行环境（execution context）</strong>是一种概念，每当函数被调用都会产生一个新的执行环境。</p>
 <blockquote>
-<p>JavaScript中的代码块是指由<code>&lt;script&gt;&lt;/script&gt;</code>标签分割的代码段。</p>
+<p><strong>执行环境</strong>定义了变量或函数有权访问的其他数据，决定了它们各自的行为。</p>
 </blockquote>
-<h3 id="u89E3_u91CA"><a href="#u89E3_u91CA" class="headerlink" title="解释"></a>解释</h3><p>JavaScript代码块在执行时先由解释器进行解释，主要过程是声明所有var变量（并未初始化赋值，当前值为undefined）、解析<strong>声明式</strong>函数语句，而且是先预定义变量再预定义函数。</p>
+<pre><code>- 1. 每个函数都有自己的执行环境。  当执行流进入一个函数时，执行环境就被推入一个环境栈中；函数执行之后，栈将其执行环境弹出，控制权返回到之前的执行环境。
+- 2. 如果变量在当前执行环境内可访问，则该变量在当前作用域内。
+- 3. JavaScript访问变量，其实就是访问该执行环境对象（变量对象）中的属性。
+- 4. 全局执行环境是最外围的一个执行环境。
+</code></pre><blockquote>
+<p><strong>执行环境对象</strong>–每个执行环境都有一个与之对应的<strong>变量对象</strong>，执行环境中定义的所有变量和函数都保存在这个对象中。</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fn</span>(<span class="params">arg</span>) </span>&#123;</span><br><span class="line">	<span class="keyword">var</span> name = <span class="string">'Far'</span>;</span><br><span class="line">	inner();</span><br><span class="line">	<span class="function"><span class="keyword">function</span> <span class="title">inner</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">		<span class="built_in">console</span>.log(<span class="string">'inner'</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">fn(<span class="string">'test'</span>);</span><br></pre></td></tr></table></figure>
+<p>在调用fn时，其过程如下</p>
+<pre><code>- 1. 创建一个空执行环境对象；
+- 2. 声明参数并赋值；{arg: 1}
+- 3. 声明局部变量；{arg:1, name: undefined}
+- 4. 预定义声明式函数；{arg:1, name: undefined， inner: function(){console.log(&apos;inner&apos;);}}
+- 5. 代码执行时，局部变量被赋值；{...name: &apos;Far&apos;...}
+- 6. 执行环境对象上变量和函数属性保持不变，调用inner函数时，其内部会创建一个新的执行环境对象，依此可递归形成一条作用域链。
+</code></pre><h2 id="u4F5C_u7528_u57DF_u4E0E_u4F5C_u7528_u57DF_u94FE"><a href="#u4F5C_u7528_u57DF_u4E0E_u4F5C_u7528_u57DF_u94FE" class="headerlink" title="作用域与作用域链"></a>作用域与作用域链</h2><blockquote>
+<p>当一个变量在某执行回家内可以被访问，我们称该变量在当前<strong>作用域</strong>内。</p>
+</blockquote>
+<p>代码某一执行环境中执行时，会创建该<strong>执行环境对应的变量对象</strong>的一个作用域链。</p>
 <blockquote>
-<p>JavaScript中函数定义主要主要有两种：声明式与函数表达式。</p>
+<p>JavaScript引擎在执行环境对象中查找作用域内的变量或函数，其查找顺序由内而外向上直到全局执行环境对象，这个顺序就形成<strong>作用域链</strong>。</p>
 </blockquote>
-<figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">//声明式函数</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">test</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//函数表达式</span></span><br><span class="line"><span class="keyword">var</span> test = <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="u4EE3_u7801_u5206_u6790"><a href="#u4EE3_u7801_u5206_u6790" class="headerlink" title="代码分析"></a>代码分析</h3><ol>
-<li><strong>试分析以下代码：</strong></li>
-</ol>
-<figure class="highlight lisp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">alert<span class="list">(<span class="keyword">a</span>)</span><span class="comment">;</span></span><br><span class="line">alert<span class="list">(<span class="quoted">'ok</span>')</span><span class="comment">;</span></span><br><span class="line">var a = <span class="number">1</span><span class="comment">;</span></span><br></pre></td></tr></table></figure>
-<p>弹出undefined和ok。因为执行时先解释：1.定义var变量，并未初始化赋值，当前值为undefined。</p>
-<ol>
-<li><strong>请君细看</strong></li>
-</ol>
-<figure class="highlight lisp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">alert<span class="list">(<span class="keyword">a</span>)</span><span class="comment">;</span></span><br><span class="line">alert<span class="list">(<span class="quoted">'ok</span>')</span><span class="comment">;</span></span><br><span class="line">a = <span class="number">1</span><span class="comment">;</span></span><br></pre></td></tr></table></figure>
-<p>会发现报错了，因为a未定义，解释时定义var变量，并不会定义此处的a。</p>
-<p>到这里我们又发现了一个值得关注的问题–定义变量的方式。</p>
-<blockquote>
-<p>JavaScript变量分两种：全局变量和局部变量。像a = 1;这种定义默认是创建全局变量，其实就相当于window.a = 1;而var a = 1;这种格式是定义一个当前作用域下的变量。解释时只会定义var格式的变量。</p>
-</blockquote>
-<p>3.<strong>函数相关</strong></p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="title">script</span>&gt;</span><span class="actionscript"></span><br><span class="line">    a();  </span><br><span class="line">    <span class="keyword">var</span> a = <span class="function"><span class="keyword">function</span><span class="params">()</span></span>&#123; <span class="comment">//声明式函数</span></span><br><span class="line">        alert(<span class="string">"函数表达式"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    alert(<span class="string">'ok1'</span>);</span><br><span class="line"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">script</span>&gt;</span><span class="actionscript"></span><br><span class="line">    a();  </span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">a</span><span class="params">()</span></span>&#123; <span class="comment">//声明式函数</span></span><br><span class="line">        alert(<span class="string">"声明式函数"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    alert(<span class="string">'ok2'</span>);</span><br><span class="line"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>结果如何呢？运行上述代码你会发现弹出了“声明式函数”和“ok2”。<br>为什么呢，这里就涉及到前面所说的<strong>代码块之间是相互独立的</strong>，故前面的a()虽然报错了，阻塞了ok1弹出；但是第二段script代码并不受影响。</p>
-<p>第一段代码缘何报错？因为代码执行时先解释声明式函数而不会解释函数表达式，此时只是定义了a变量，未初始化，其值为undefined,不是函数。</p>
-<p>到此时对JavaScript的解释与执行机制、顺序也算有初步的认识了。</p>
+<p>作用域链的<strong>前端</strong>，始终是当前执行环境对应的变量对象。若此执行环境是函数，则将其活动对象作为变量对象。作用域链中的<strong>下一个</strong>变量对象来自于当前变量对象的包含（外部）执行环境，如此一直到全局执行环境；全局执行环境的变量对象始终是作用域链中的<strong>最后</strong>一个变量对象。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">var</span> age = <span class="number">22</span>;</span><br><span class="line"><span class="keyword">var</span> country = <span class="string">'China'</span>;</span><br><span class="line"><span class="keyword">var</span> name = <span class="string">'Java'</span>;</span><br><span class="line"><span class="keyword">var</span> job = <span class="string">'Web'</span>;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">outer</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">	<span class="built_in">console</span>.log(age);  <span class="comment">//输出22</span></span><br><span class="line">	<span class="built_in">console</span>.log(country); <span class="comment">//输出undefined</span></span><br><span class="line">	<span class="keyword">var</span> country = <span class="string">'Union'</span>;</span><br><span class="line">	<span class="keyword">var</span> name = <span class="string">'Python'</span>;</span><br><span class="line">	inner();</span><br><span class="line">	<span class="function"><span class="keyword">function</span> <span class="title">inner</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">		<span class="built_in">console</span>.log(name); <span class="comment">//输出Python</span></span><br><span class="line">		<span class="built_in">console</span>.log(job); <span class="comment">//输出Web</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">outer();</span><br></pre></td></tr></table></figure>
+<p>代码输出结果如上：</p>
+<pre><code>- 1. outer函数执行时，首先在outer执行环境对象中查找age和country变量结果country存在但并未初始化赋值，输出undefined;而age未找到于是沿着作用域链向上到全局执行环境，在其变量对象中存在age属性，于是输出其值22.
+- 2. inner函数执行时创建自己的执行环境对象，其并没有定义name和job等变量，于是沿着作用域链向上到达outer函数的执行环境，在其变量对象中存在name于是输出其值Python；而未找到job于是继续向上直到全局执行环境，找到并输出其值，结束；若依然未找到，则会报错，停止运行。
+</code></pre><p><strong>注：函数参数亦被当作变量对待，故其访问规则与普通变量相同。</strong></p>
+<h3 id="u5EF6_u957F_u4F5C_u7528_u57DF_u94FE"><a href="#u5EF6_u957F_u4F5C_u7528_u57DF_u94FE" class="headerlink" title="延长作用域链"></a>延长作用域链</h3><p>某些语句可以在作用域链的前端临时增加一个变量对象，该变量对象会在代码执行结束后移除。常见如：</p>
+<ul>
+<li>try-catch语句；<br>catch语句会创建一个新变量对象，包含被抛出的错误对象的声明。</li>
+<li>with语句；<br>with语句会创建一个包含语句接收对象的所有属性和方法的变量对象。</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getAttr</span>(<span class="params">data</span>) </span>&#123;</span><br><span class="line">	<span class="keyword">var</span> obj = data;</span><br><span class="line">	<span class="keyword">with</span>(obj) &#123;</span><br><span class="line">		<span class="keyword">var</span> o = location;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">console</span>.log(o);</span><br><span class="line">&#125;</span><br><span class="line">getAttr(<span class="built_in">window</span>);</span><br></pre></td></tr></table></figure>
+<p>上面with语句接收window对象，其创建的变量对象就包含了window对象所有属性和方法，于是可以在其执行环节直接访问location变量，也就是正常的window.location。</p>
+<p><em>强烈建议不要使用with语句。</em></p>
+<p>本篇笔记阐述JavaScript执行环境与执行环境对象，变量对象，作用域与作用域链，耗时颇多，还有诸多不足之处待日后补充改进。</p>
 </span>
       
     </div>
@@ -322,9 +345,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Compile/" rel="tag">#Compile</a>
-          
             <a href="/tags/JavaScript/" rel="tag">#JavaScript</a>
+          
+            <a href="/tags/Scope/" rel="tag">#Scope</a>
           
         </div>
       
@@ -333,16 +356,16 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/01/06/js-object/" rel="next" title="JavaScript之面向对象">
-                <i class="fa fa-chevron-left"></i> JavaScript之面向对象
+              <a href="/2016/01/06/js-prototype/" rel="next" title="JavaScript之原型与原型链">
+                <i class="fa fa-chevron-left"></i> JavaScript之原型与原型链
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2016/01/06/js-prototype/" rel="prev" title="JavaScript之原型与原型链">
-                JavaScript之原型与原型链 <i class="fa fa-chevron-right"></i>
+              <a href="/2016/01/07/js-executionContext/" rel="prev" title="JavaScript之this、call与apply">
+                JavaScript之this、call与apply <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -370,8 +393,8 @@
         
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2016/01/06/js-compileRun/"
-           data-title="JavaScript之解释与执行机制" data-url="http://blog.codingplayboy.com/2016/01/06/js-compileRun/">
+      <div class="ds-thread" data-thread-key="2016/01/07/js-scope/"
+           data-title="JavaScript之作用域与作用域链" data-url="http://blog.codingplayboy.com/2016/01/07/js-scope/">
       </div>
     
   </div>
@@ -501,7 +524,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#JavaScript_u4E4B_u89E3_u91CA_u4E0E_u6267_u884C_u673A_u5236"><span class="nav-number">1.</span> <span class="nav-text">JavaScript之解释与执行机制</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#JavaScript_u89E3_u91CA_u4E0E_u6267_u884C"><span class="nav-number">1.1.</span> <span class="nav-text">JavaScript解释与执行</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#u89E3_u91CA"><span class="nav-number">1.1.1.</span> <span class="nav-text">解释</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u4EE3_u7801_u5206_u6790"><span class="nav-number">1.1.2.</span> <span class="nav-text">代码分析</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#JavaScript_u4E4B_u4F5C_u7528_u57DF_u4E0E_u4F5C_u7528_u57DF_u94FE"><span class="nav-number">1.</span> <span class="nav-text">JavaScript之作用域与作用域链</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#u53D8_u91CF_u4F5C_u7528_u57DF"><span class="nav-number">1.1.</span> <span class="nav-text">变量作用域</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#u53D8_u91CF_u63D0_u5347"><span class="nav-number">1.1.1.</span> <span class="nav-text">变量提升</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u53D8_u91CF_u63D0_u5347_u4E0E_u6267_u884C_u73AF_u5883_u5BF9_u8C61"><span class="nav-number">1.1.2.</span> <span class="nav-text">变量提升与执行环境对象</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#u63D0_u5347"><span class="nav-number">1.1.2.1.</span> <span class="nav-text">提升</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#u6267_u884C_u73AF_u5883_u4E0E_u6267_u884C_u73AF_u5883_u5BF9_u8C61"><span class="nav-number">1.1.2.2.</span> <span class="nav-text">执行环境与执行环境对象</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#u4F5C_u7528_u57DF_u4E0E_u4F5C_u7528_u57DF_u94FE"><span class="nav-number">1.2.</span> <span class="nav-text">作用域与作用域链</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#u5EF6_u957F_u4F5C_u7528_u57DF_u94FE"><span class="nav-number">1.2.1.</span> <span class="nav-text">延长作用域链</span></a></li></ol></li></ol></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">
