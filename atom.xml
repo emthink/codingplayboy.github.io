@@ -4,7 +4,7 @@
   
   <link href="/atom.xml" rel="self"/>
   <link href="http://blog.codingplayboy.com/"/>
-  <updated>2016-01-06T13:50:43.000Z</updated>
+  <updated>2016-01-06T13:50:44.000Z</updated>
   <id>http://blog.codingplayboy.com/</id>
   
   <author>
@@ -19,7 +19,7 @@
     <link href="http://blog.codingplayboy.com/2016/01/06/js-prototype/"/>
     <id>http://blog.codingplayboy.com/2016/01/06/js-prototype/</id>
     <published>2016-01-06T13:44:22.000Z</published>
-    <updated>2016-01-06T13:50:43.000Z</updated>
+    <updated>2016-01-06T13:50:44.000Z</updated>
     <content type="html"><![CDATA[<h1 id="JavaScript_u4E4B_u539F_u578B_u4E0E_u539F_u578B_u94FE"><a href="#JavaScript_u4E4B_u539F_u578B_u4E0E_u539F_u578B_u94FE" class="headerlink" title="JavaScript之原型与原型链"></a>JavaScript之原型与原型链</h1><p>在基于类的语言中，对象是类的实例，并且类可以从另一个类继承，如Java；JavaScript则是一门基于原型的语言，以原型链实现继承，其对象可以直接继承自另一对象，此篇详细阐述JavaScript之原型与原型链。</p>
 <h2 id="u539F_u578B"><a href="#u539F_u578B" class="headerlink" title="原型"></a>原型</h2><p>Javascript中创建的每个函数都有一个prototype属性，这个属性是一个指针，指向一个对象，这个对象的作用即是包含可以由特定类型实例共享的属性和方法，这个对象就是函数的原型对象。</p>
 <p>默认情况，所有的原型对象都会有一个constructor属性，这个属性包含一个指向prototype属性所在函数的指针。</p>
