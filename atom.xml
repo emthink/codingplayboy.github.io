@@ -4,7 +4,7 @@
   
   <link href="/atom.xml" rel="self"/>
   <link href="http://blog.codingplayboy.com/"/>
-  <updated>2016-01-10T09:06:00.000Z</updated>
+  <updated>2016-01-10T09:08:37.000Z</updated>
   <id>http://blog.codingplayboy.com/</id>
   
   <author>
@@ -15,11 +15,11 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title><![CDATA[h5_contextmenu]]></title>
+    <title><![CDATA[HTML5之自定义上下文菜单实现]]></title>
     <link href="http://blog.codingplayboy.com/2016/01/10/h5-contextmenu/"/>
     <id>http://blog.codingplayboy.com/2016/01/10/h5-contextmenu/</id>
     <published>2016-01-10T07:47:55.000Z</published>
-    <updated>2016-01-10T09:06:00.000Z</updated>
+    <updated>2016-01-10T09:08:37.000Z</updated>
     <content type="html"><![CDATA[<h1 id="HTML5_u4E4B_u81EA_u5B9A_u4E49_u4E0A_u4E0B_u6587_u83DC_u5355_u5B9E_u73B0"><a href="#HTML5_u4E4B_u81EA_u5B9A_u4E49_u4E0A_u4E0B_u6587_u83DC_u5355_u5B9E_u73B0" class="headerlink" title="HTML5之自定义上下文菜单实现"></a>HTML5之自定义上下文菜单实现</h1><p>上下文菜单，通常表现为通过单击鼠标右键可以弹出一个上下文菜单。目前，所有浏览器都实现了默认的上下文菜单，为实现自定义上下文菜单，首先需要屏蔽相关默认上下文菜单，其后是确定以什么方式显示上下文菜单，在本篇，我们讲解Html5中的contextmenu事件并用其实现一个自定义上下文菜单。<br><strong>效果如图</strong><br><img src="http://codingplayboy.duapp.com/wp-content/uploads/2016/01/contextmenu.png" alt="自定义上下文菜单示例图"><br><strong>demo展示地址</strong><br><a href="http://jhssdemo.duapp.com/demo/h5_contextmenu/index.html" target="_blank" rel="external">自定义上下文菜单示例演示点此</a></p>
 <h2 id="contextmenu_u4E8B_u4EF6"><a href="#contextmenu_u4E8B_u4EF6" class="headerlink" title="contextmenu事件"></a>contextmenu事件</h2><p>contextmenu事件属于鼠标事件，所有其事件对象中包含与光标位置相关的属性。这个事件目标是用户操作的对象元素，其又是冒泡的，因此我们可以为dodument指定事件处理程序以点击事件关闭上下文菜单，而在需要实现上下文菜单的目标元素上注册contextmenu事件，在此元素上阻止冒泡。</p>
 <h3 id="u963B_u6B62_u5192_u6CE1"><a href="#u963B_u6B62_u5192_u6CE1" class="headerlink" title="阻止冒泡"></a>阻止冒泡</h3><p>在DOM事件中，event.preventDefault()可阻止事件冒泡,而在IE中，将event.returnValue的值设为false可阻止事件冒泡。</p>
