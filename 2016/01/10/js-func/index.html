@@ -35,7 +35,7 @@
 <link href="/css/main.css?v=0.4.5.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="blog, JavaScript, html, css, codingplayboy, web, 惊鸿三世, 惊鸿三世的博客, 博客" />
+  <meta name="keywords" content="Function,JavaScript," />
 
 
 
@@ -53,16 +53,16 @@
 
 
 
-<meta name="description" content="路漫漫其修远兮，吾将上下而求索。">
+<meta name="description" content="高阶函数，是指可以作为参数传递或者可以作为返回值输出的函数。在JavaScript中，函数是第一类对象，其既可以作为参数传递，也可以作为其他函数的返回值输出，显然是高阶函数。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="js_func">
+<meta property="og:title" content="JavaScript之闭包与高阶函数（二）">
 <meta property="og:url" content="http://blog.codingplayboy.com/2016/01/10/js-func/index.html">
 <meta property="og:site_name" content="惊鸿三世的博客">
-<meta property="og:description" content="路漫漫其修远兮，吾将上下而求索。">
-<meta property="og:updated_time" content="2016-01-09T16:35:25.000Z">
+<meta property="og:description" content="高阶函数，是指可以作为参数传递或者可以作为返回值输出的函数。在JavaScript中，函数是第一类对象，其既可以作为参数传递，也可以作为其他函数的返回值输出，显然是高阶函数。">
+<meta property="og:updated_time" content="2016-01-12T16:07:53.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="js_func">
-<meta name="twitter:description" content="路漫漫其修远兮，吾将上下而求索。">
+<meta name="twitter:title" content="JavaScript之闭包与高阶函数（二）">
+<meta name="twitter:description" content="高阶函数，是指可以作为参数传递或者可以作为返回值输出的函数。在JavaScript中，函数是第一类对象，其既可以作为参数传递，也可以作为其他函数的返回值输出，显然是高阶函数。">
 
 
 
@@ -75,7 +75,7 @@
 </script>
 
 
-  <title> js_func | 惊鸿三世的博客 </title>
+  <title> JavaScript之闭包与高阶函数（二） | 惊鸿三世的博客 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -225,7 +225,7 @@
             
             
               
-                js_func
+                JavaScript之闭包与高阶函数（二）
               
             
           </h1>
@@ -239,6 +239,21 @@
             </time>
           </span>
 
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp; 分类于
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/JavaScript/" itemprop="url" rel="index">
+                    <span itemprop="name">JavaScript</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
           
 
           
@@ -265,11 +280,38 @@
       
 
       
-        <span itemprop="articleBody"></span>
+        <span itemprop="articleBody"><h1 id="JavaScript_u4E4B_u95ED_u5305_u4E0E_u9AD8_u9636_u51FD_u6570_uFF08_u4E8C_uFF09"><a href="#JavaScript_u4E4B_u95ED_u5305_u4E0E_u9AD8_u9636_u51FD_u6570_uFF08_u4E8C_uFF09" class="headerlink" title="JavaScript之闭包与高阶函数（二）"></a>JavaScript之闭包与高阶函数（二）</h1><p>高阶函数，是指可以作为参数传递或者可以作为返回值输出的函数。在JavaScript中，函数是第一类对象，其既可以作为参数传递，也可以作为其他函数的返回值输出，显然是高阶函数。</p>
+<h2 id="u9AD8_u9636_u51FD_u6570_u4E4B_u53C2_u6570_u4F20_u9012"><a href="#u9AD8_u9636_u51FD_u6570_u4E4B_u53C2_u6570_u4F20_u9012" class="headerlink" title="高阶函数之参数传递"></a>高阶函数之参数传递</h2><p>把函数当作参数传递，最常见的要数回掉函数，，我们常常在回掉函数中存放的是代码中易变的逻辑部分</p>
+<h3 id="u56DE_u6389_u51FD_u6570"><a href="#u56DE_u6389_u51FD_u6570" class="headerlink" title="回掉函数"></a>回掉函数</h3><p>在JavaScript的学习和开发过程中，回掉函数的使用率可谓尤其高，在DOM事件注册事件处理程序，ajax异步请求等等诸多场景频繁使用回掉函数。</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * [addHandler 处理事件注册兼容]</span><br><span class="line"> * @param &#123;[<span class="built_in">type</span>]&#125; elem    [dom元素]</span><br><span class="line"> * @param &#123;[<span class="built_in">type</span>]&#125; <span class="built_in">type</span>    [事件类型]</span><br><span class="line"> * @param &#123;[<span class="built_in">type</span>]&#125; handler [事件处理程序]</span><br><span class="line"> */</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">addHandler</span><span class="params">(elem, type, handler)</span></span> &#123;</span><br><span class="line">	<span class="keyword">if</span> (document.addEventListener) &#123;</span><br><span class="line">		elem.addEventListener(<span class="built_in">type</span>, handler);</span><br><span class="line">	&#125;<span class="keyword">else</span> <span class="keyword">if</span> (document.attachEvent) &#123;</span><br><span class="line">		elem.attachEvent(<span class="string">'on'</span> + <span class="built_in">type</span>, handler);</span><br><span class="line">	&#125;<span class="keyword">else</span> &#123;</span><br><span class="line">		elem[<span class="string">'on'</span> + <span class="built_in">type</span>] = handler;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fn1</span><span class="params">(e)</span></span> &#123;</span><br><span class="line">	console.log(e);</span><br><span class="line">&#125; </span><br><span class="line">var div = document.getElementById(<span class="string">'myDiv'</span>);</span><br><span class="line">addHandler(div, <span class="string">'click'</span>, fn1);</span><br></pre></td></tr></table></figure>
+<p>又比如Array.prototype.sort方法，接受一个函数当作参数，函数里面封装的是对数组进行排序的规则。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">var arr = [<span class="number">1</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">2</span>, <span class="number">4</span>, <span class="number">6</span>];</span><br><span class="line">arr.sort(function(a, b) &#123;</span><br><span class="line">	<span class="keyword">return</span> a - b; <span class="comment">//从小到大排序，如需从大到小排序，只需return b - a;</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h2 id="u9AD8_u9636_u51FD_u6570_u4E4B_u8FD4_u56DE_u503C_u8F93_u51FA"><a href="#u9AD8_u9636_u51FD_u6570_u4E4B_u8FD4_u56DE_u503C_u8F93_u51FA" class="headerlink" title="高阶函数之返回值输出"></a>高阶函数之返回值输出</h2><p>相信大家对函数式编程一定不陌生，至少都耳熟过，，在函数式编程中，将函数当作返回值输出很是常见。</p>
+<h3 id="u7C7B_u578B_u68C0_u6D4B"><a href="#u7C7B_u578B_u68C0_u6D4B" class="headerlink" title="类型检测"></a>类型检测</h3><p>JavaScript是一门动态的脚本语言，其数据类型直到程序运行时才能确定，于是在JavaScript中对数据类型进行检测判断不如Java等其他静态语言来的简便直接。</p>
+<h4 id="typeof_u548Cinstanceof"><a href="#typeof_u548Cinstanceof" class="headerlink" title="typeof和instanceof"></a>typeof和instanceof</h4><p>JavaScript中,常见的两个判断数据类型的方法是使用typeof和instanceof,在大多数情况下还是能正确判断出数据类型的，但这两者都有其局限性，因此，其使用也必然有局限性。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> <span class="literal">null</span>); <span class="comment">//object</span></span><br><span class="line"><span class="keyword">var</span> arr = [];</span><br><span class="line"><span class="built_in">console</span>.log(arr <span class="keyword">instanceof</span> <span class="built_in">Array</span>);<span class="comment">//true</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">test</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">	<span class="built_in">console</span>.log(<span class="built_in">arguments</span> <span class="keyword">instanceof</span> <span class="built_in">Array</span>); <span class="comment">//输出false</span></span><br><span class="line">&#125;</span><br><span class="line">test();</span><br></pre></td></tr></table></figure>
+<p>只有当arr是数组，且与Array构造函数在同一全局作用域中，arr instanceof Array才返回true，如果arr是某一frame中定义的数组，上式返回false。</p>
+<h4 id="Object-prototype-toString"><a href="#Object-prototype-toString" class="headerlink" title="Object.prototype.toString"></a>Object.prototype.toString</h4><p>Object.prototype.toString方法总是返回字符串，如Object.prototype.toString.call([1,2,3])总是返回”[object Array]”,Object.prototype.toString.call(‘str’)总是返回”[object String]”，Object.prototype.toString.call(12)总是返回”[object Number]”,所以可以使用Object.prototype.</p>
+<p><em><a href="http://note.codingplayboy.com/2016/01/07/js-executionContext/" target="_blank" rel="external">更多关于calls与apply可查看本系列笔记篇JavaScript之this,call与apply</a></em></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">var</span> isType = <span class="function"><span class="keyword">function</span>(<span class="params">type</span>) </span>&#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">obj</span>) </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="built_in">Object</span>.prototype.toString.call(obj) == <span class="string">'[object '</span> + type + <span class="string">']'</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> isString = isType(<span class="string">'String'</span>);</span><br><span class="line"><span class="built_in">console</span>.log(isString(<span class="string">'testString'</span>)); <span class="comment">//输出true</span></span><br><span class="line"><span class="keyword">var</span> isArray = isType(<span class="string">'Array'</span>);</span><br><span class="line"><span class="built_in">console</span>.log(isArray([<span class="number">1</span>,<span class="number">3</span>,<span class="number">5</span>])); <span class="comment">//输出true</span></span><br></pre></td></tr></table></figure>
+<h4 id="u4F5C_u7528_u57DF_u5B89_u5168_u7684_u6784_u9020_u51FD_u6570"><a href="#u4F5C_u7528_u57DF_u5B89_u5168_u7684_u6784_u9020_u51FD_u6570" class="headerlink" title="作用域安全的构造函数"></a>作用域安全的构造函数</h4><p>构造函数，即是一个函数，通过new操作符调用，以new操作符调用时，构造函数内部this指向新创建的构造函数实例对象。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Animal</span>(<span class="params">name, type</span>) </span>&#123;</span><br><span class="line">	<span class="keyword">this</span>.name = name;</span><br><span class="line">	<span class="keyword">this</span>.type = type;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> animal1 = <span class="keyword">new</span> Animal(<span class="string">'wangwang'</span>, <span class="string">'Dog'</span>);</span><br><span class="line"><span class="built_in">console</span>.log(animal1.name, animal1.type); <span class="comment">//输出wnagwnag DOg</span></span><br><span class="line"><span class="keyword">var</span> animal2 = Animal(<span class="string">'miaomiao'</span>, <span class="string">'Cat'</span>);</span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">window</span>.name, <span class="built_in">window</span>.type); <span class="comment">//输出miaomiao Cat</span></span><br><span class="line"><span class="built_in">console</span>.log(animal2.name, animal2.type); <span class="comment">//TypeError: Cannot read property 'name' of undefined</span></span><br></pre></td></tr></table></figure>
+<p>当使用new操作符调用Animal构造函数时，会创建一个新的Animal对象，此对象拥有name和type属性；当直接调用Animal构造函数时，this对象指向全局环境即window(普通函数方式调用时，this总是指向全局环境，<a href="http://note.codingplayboy.com/2016/01/07/js-executionContext/" target="_blank" rel="external">更多关于this指向问题可查看本系列笔记篇JavaScript之this,call与apply</a>)，于是上述代码window上有name和type属性，animal2上没有。</p>
+<p>上述问题该如何解决呢？既然问题源自this,那就从this着手：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">function <span class="type">Animal</span>(name, <span class="class"><span class="keyword">type</span>) &#123;</span></span><br><span class="line">	<span class="keyword">if</span> (<span class="keyword">this</span> instanceof <span class="type">Animal</span>) &#123;</span><br><span class="line">		<span class="keyword">this</span>.name = name;</span><br><span class="line">		<span class="keyword">this</span>.<span class="keyword">type</span> = <span class="class"><span class="keyword">type</span>;</span></span><br><span class="line">	&#125;<span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">new</span> <span class="type">Animal</span>(name, <span class="class"><span class="keyword">type</span>);</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> animal1 = <span class="keyword">new</span> <span class="type">Animal</span>(<span class="symbol">'wangwan</span>g', <span class="symbol">'Do</span>g');</span><br><span class="line">console.log(animal1.name, animal1.<span class="keyword">type</span>); <span class="comment">//输出wnagwnag DOg</span></span><br><span class="line"><span class="keyword">var</span> animal2 = <span class="type">Animal</span>(<span class="symbol">'miaomia</span>o', <span class="symbol">'Ca</span>t');</span><br><span class="line">console.log(window.name); <span class="comment">//输出undefined</span></span><br><span class="line">console.log(animal2.name, animal2.<span class="keyword">type</span>); <span class="comment">//输出miaomiao Cat</span></span><br></pre></td></tr></table></figure>
+<h2 id="u51FD_u6570_u7ED1_u5B9A"><a href="#u51FD_u6570_u7ED1_u5B9A" class="headerlink" title="函数绑定"></a>函数绑定</h2></span>
       
     </div>
 
     <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Function/" rel="tag">#Function</a>
+          
+            <a href="/tags/JavaScript/" rel="tag">#JavaScript</a>
+          
+        </div>
       
 
       
@@ -314,7 +356,7 @@
   <div class="comments" id="comments">
     
       <div class="ds-thread" data-thread-key="2016/01/10/js-func/"
-           data-title="js_func" data-url="http://blog.codingplayboy.com/2016/01/10/js-func/">
+           data-title="JavaScript之闭包与高阶函数（二）" data-url="http://blog.codingplayboy.com/2016/01/10/js-func/">
       </div>
     
   </div>
@@ -358,21 +400,21 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">12</span>
+              <span class="site-state-item-count">13</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
 
           <div class="site-state-item site-state-categories">
             <a href="/categories">
-              <span class="site-state-item-count">6</span>
+              <span class="site-state-item-count">8</span>
               <span class="site-state-item-name">分类</span>
               </a>
           </div>
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">14</span>
+              <span class="site-state-item-count">18</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>
@@ -392,6 +434,14 @@
           
             
               <span class="links-of-author-item">
+                <a href="http://blog.codingplayboy.com" target="_blank">
+                  
+                    <i class="fa fa-globe"></i> 博客
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
                 <a href="https://github.com/codingplayboy" target="_blank">
                   
                     <i class="fa fa-globe"></i> github
@@ -402,7 +452,7 @@
               <span class="links-of-author-item">
                 <a href="http://weibo.com/3943991354" target="_blank">
                   
-                    <i class="fa fa-globe"></i> weibo
+                    <i class="fa fa-globe"></i> 微博
                   
                 </a>
               </span>
@@ -410,7 +460,7 @@
               <span class="links-of-author-item">
                 <a href="http://www.zhihu.com/people/codingplayboy" target="_blank">
                   
-                    <i class="fa fa-globe"></i> zhihu
+                    <i class="fa fa-globe"></i> 知乎
                   
                 </a>
               </span>
@@ -423,10 +473,10 @@
 
         <div class="links-of-author motion-element">
           
-            <p class="site-author-name">Links</p>
+            <p class="site-author-name">Email</p>
             
               <span class="links-of-author-item">
-                <a href="http://macshuo.com/" target="_blank">MacTalk</a>
+                <a href="E://codingfun@163.com" target="_blank">codingfun@163.com</a>
               </span>
             
           
@@ -444,7 +494,7 @@
               
             
             
-              <p class="post-toc-empty">此文章未包含目录</p>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#JavaScript_u4E4B_u95ED_u5305_u4E0E_u9AD8_u9636_u51FD_u6570_uFF08_u4E8C_uFF09"><span class="nav-number">1.</span> <span class="nav-text">JavaScript之闭包与高阶函数（二）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#u9AD8_u9636_u51FD_u6570_u4E4B_u53C2_u6570_u4F20_u9012"><span class="nav-number">1.1.</span> <span class="nav-text">高阶函数之参数传递</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#u56DE_u6389_u51FD_u6570"><span class="nav-number">1.1.1.</span> <span class="nav-text">回掉函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#u9AD8_u9636_u51FD_u6570_u4E4B_u8FD4_u56DE_u503C_u8F93_u51FA"><span class="nav-number">1.2.</span> <span class="nav-text">高阶函数之返回值输出</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#u7C7B_u578B_u68C0_u6D4B"><span class="nav-number">1.2.1.</span> <span class="nav-text">类型检测</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#typeof_u548Cinstanceof"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">typeof和instanceof</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Object-prototype-toString"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">Object.prototype.toString</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#u4F5C_u7528_u57DF_u5B89_u5168_u7684_u6784_u9020_u51FD_u6570"><span class="nav-number">1.2.1.3.</span> <span class="nav-text">作用域安全的构造函数</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#u51FD_u6570_u7ED1_u5B9A"><span class="nav-number">1.3.</span> <span class="nav-text">函数绑定</span></a></li></ol></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">
